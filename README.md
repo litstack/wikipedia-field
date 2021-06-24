@@ -35,19 +35,22 @@ If no `chars` is given, the content length is not limited.
 In order to load the content of a wikipedia article you can use the `Wikipedia` facade.
 
 ```php
-Wikipedia::load('https://en.wikipedia.org/wiki/PHP'); // will output the first 'intro' section of the article
+// will output the first 'intro' section of the article
+Wikipedia::load('https://en.wikipedia.org/wiki/PHP');
 ```
 
 You can also select a specific section:
 
 ```php
-Wikipedia::load('https://en.wikipedia.org/wiki/PHP', 'Mascot'); // will output the 'Mascot' section.
+// will output the 'Mascot' section.
+Wikipedia::load('https://en.wikipedia.org/wiki/PHP', 'Mascot');
 ```
 
 You might as well set a maximum amout of characters:
 
 ```php
-Wikipedia::load('https://en.wikipedia.org/wiki/PHP', 'Mascot', 100); // will output the first 100 chars of the 'Mascot' section.
+// will output the first 100 chars of the 'Mascot' section.
+Wikipedia::load('https://en.wikipedia.org/wiki/PHP', 'Mascot', 100);
 ```
 
 When using the field in a `form`, the values are stored in an array with a title of all keys combined, e.g.:
