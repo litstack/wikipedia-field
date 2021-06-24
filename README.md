@@ -30,6 +30,26 @@ If you use the field in a model, you have to provide columns for the `url`, `sec
 If no `section` is given, the intro paragraph of the article will be taken.
 If no `chars` is given, the content length is not limited.
 
+### Displaying Content
+
+In order to load the content of a wikipedia article you can use the `Wikipedia` facade.
+
+```php
+Wikipedia::load('https://en.wikipedia.org/wiki/PHP'); // will output the first 'intro' section of the article
+```
+
+You can also select a specific section:
+
+```php
+Wikipedia::load('https://en.wikipedia.org/wiki/PHP', 'Mascot'); // will output the 'Mascot' section.
+```
+
+You might as well set a maximum amout of characters:
+
+```php
+Wikipedia::load('https://en.wikipedia.org/wiki/PHP', 'Mascot', 100); // will output the first 100 chars of the 'Mascot' section.
+```
+
 You can load the cached data with the following facade:
 
 ```php
