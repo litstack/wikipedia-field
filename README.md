@@ -1,6 +1,6 @@
-# wikipedia-field
+# Wikipedia-Field
 
-https://de.wikipedia.org/w/api.php?action=parse&page=Kay_H._Nebel&format=json&section=' . \$targetSection
+Use Wikipedia as the source for your content.
 
 ## Config
 
@@ -22,6 +22,8 @@ The wikipedia formfield is used as follows:
 ```php
 $form->wikipedia('url', 'section', 'chars');
 ```
+
+If no `section` is given, the intro paragraph of the article will be taken.
 
 ```php
 Wikipedia::load($form->url, $form->section, $form->chars);
