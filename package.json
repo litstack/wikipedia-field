@@ -1,0 +1,26 @@
+{
+    "name": "litstack-wikipedia-field",
+    "version": "1.0.0",
+    "description": "",
+    "main": "js/index.js",
+    "scripts": {
+        "dev": "npm run development",
+        "development": "mix",
+        "watch": "mix watch",
+        "watch-poll": "mix watch -- --watch-options-poll=1000",
+        "hot": "mix watch --hot",
+        "prod": "npm run production",
+        "production": "mix --production"
+    },
+    "author": "Jannes Behrens",
+    "license": "MIT",
+    "dependencies": {
+        "vue": "^2.6.12"
+    },
+    "devDependencies": {
+        "cross-env": "^7.0.2",
+        "laravel-mix": "^6.0.6",
+        "vue-template-compiler": "^2.6.12",
+        "vue-loader": "^15.9.6"
+    }
+}
