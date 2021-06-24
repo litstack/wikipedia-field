@@ -50,16 +50,6 @@ You might as well set a maximum amout of characters:
 Wikipedia::load('https://en.wikipedia.org/wiki/PHP', 'Mascot', 100); // will output the first 100 chars of the 'Mascot' section.
 ```
 
-You can load the cached data with the following facade:
-
-```php
-Wikipedia::load(
-    $model->url, // a valid wikipedia url
-    $model->section, // the headline of a section in the article
-    $model->chars,  // max chars
-);
-```
-
 When using the field in a `form`, the values are stored in an array with a title of all keys combined, e.g.:
 
 ```php
