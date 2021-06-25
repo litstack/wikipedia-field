@@ -65,15 +65,7 @@ export default {
         };
     },
     beforeMount() {
-        if (this.value) {
-            this.formData = this.value;
-        } else {
-            this.formData = {
-                url: this.model[this.field.url_key],
-                section: this.model[this.field.section_key],
-                chars: this.model[this.field.chars_key],
-            };
-        }
+        this.init();
 
         Lit.bus.$on('saved', () => {
             if (!this.changed) {
@@ -84,6 +76,9 @@ export default {
         });
     },
     watch: {
+        value(val) {
+            this.init();
+        },
         formData: {
             deep: true,
             handler(val) {
@@ -92,6 +87,17 @@ export default {
         },
     },
     methods: {
+        init() {
+            if (this.value) {
+                this.formData = this.value;
+            } else {
+                this.formData = {
+                    url: this.model[this.field.url_key],
+                    section: this.model[this.field.section_key],
+                    chars: this.model[this.field.chars_key],
+                };
+            }
+        },
         input(val) {
             this.changed = true;
             this.$emit('input', val);

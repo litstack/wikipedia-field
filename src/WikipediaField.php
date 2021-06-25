@@ -4,10 +4,13 @@ namespace Litstack\Wikipedia;
 
 use Closure;
 use Ignite\Crud\BaseField;
+use Ignite\Crud\Fields\Traits\TranslatableField;
 use Ignite\Crud\Models\LitFormModel;
 
 class WikipediaField extends BaseField
 {
+    use TranslatableField;
+
     /**
      * Vue component name.
      *
