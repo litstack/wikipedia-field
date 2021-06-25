@@ -120,7 +120,7 @@ class WikipediaController
     {
         $segments = explode('/', $wikipedia_url);
 
-        return end($segments);
+        return urldecode(end($segments));
     }
 
     /**
