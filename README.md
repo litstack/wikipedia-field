@@ -20,8 +20,16 @@ You can configure the cache time by adding the `wikipedia` settings to the `fiel
 The wikipedia formfield is used as follows:
 
 ```php
-// provide the keys url, section (optional) and chars (optional)
 $form->wikipedia('wiki');
+```
+
+In your Model you need to provide a json column wich is cast properly:
+
+```php
+// in your model
+protected $casts = [
+    'wiki' => 'json',
+];
 ```
 
 If you want to disable the `section` or `chars` inputs you can do it as follows:
