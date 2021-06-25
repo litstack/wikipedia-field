@@ -9,18 +9,21 @@
             >
                 <b-input class="mb-2 rounded-full" v-model="formData.url" />
             </b-form-group>
-            <b-form-group description="Geschichte" label="Section">
-                <b-input
-                    class="mb-2 rounded-full"
-                    v-model="formData.section"
-                    v-if="hasSection"
-                />
+            <b-form-group
+                description="Geschichte"
+                label="Section"
+                v-if="field.section"
+            >
+                <b-input class="mb-2 rounded-full" v-model="formData.section" />
             </b-form-group>
-            <b-form-group description="Chars" label="Max Chars">
+            <b-form-group
+                description="Chars"
+                label="Max Chars"
+                v-if="field.chars"
+            >
                 <b-input
                     class="mb-2 rounded-full"
                     v-model="formData.chars"
-                    v-if="hasChars"
                     type="number"
                 />
             </b-form-group>
@@ -62,10 +65,13 @@ export default {
             changed: false,
             show_preview: false,
             preview_text: null,
+            is_watching: false,
         };
     },
     beforeMount() {
         this.init();
+
+        this.is_watching = true;
 
         Lit.bus.$on('saved', () => {
             if (!this.changed) {
@@ -89,12 +95,16 @@ export default {
     methods: {
         init() {
             if (this.value) {
-                this.formData = this.value;
+                if (typeof this.value === 'string') {
+                    this.formData = JSON.parse(this.value);
+                } else {
+                    this.formData = this.value;
+                }
             } else {
                 this.formData = {
-                    url: this.model[this.field.url_key],
-                    section: this.model[this.field.section_key],
-                    chars: this.model[this.field.chars_key],
+                    url: null,
+                    section: null,
+                    chars: null,
                 };
             }
         },
@@ -105,11 +115,10 @@ export default {
         async preview() {
             this.busy = true;
             try {
-                const { data } = await axios.post('wikipedia-preview', {
-                    url: this.formData.url,
-                    section: this.formData.section,
-                    chars: this.formData.chars,
-                });
+                const { data } = await axios.post(
+                    'wikipedia-preview',
+                    this.formData
+                );
                 this.preview_text = data;
                 this.show_preview = true;
             } catch (error) {
@@ -120,12 +129,6 @@ export default {
         },
     },
     computed: {
-        hasSection() {
-            return this.field.hasOwnProperty('section_key');
-        },
-        hasChars() {
-            return this.field.hasOwnProperty('chars_key');
-        },
         url_errors() {
             return this.errors.url?.join(', ');
         },
