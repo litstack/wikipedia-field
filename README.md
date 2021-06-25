@@ -21,14 +21,14 @@ The wikipedia formfield is used as follows:
 
 ```php
 // provide the keys url, section (optional) and chars (optional)
-$form->wikipedia('url', 'section', 'chars');
+$form->wikipedia('wiki');
 ```
 
-The formfield will show the single inputs for the `url`, `section` (if provided), and `chars` (if provided). It will also show a preview button that you can use for validation and pre-caching the content.
+If you want to disable the `section` or `chars` inputs you can do it as follows:
 
-If you use the field in a model, you have to provide columns for the `url`, `section` (optional), and `chars` (optional) in your database.
-If no `section` is given, the intro paragraph of the article will be taken.
-If no `chars` is given, the content length is not limited.
+```php
+$form->wikipedia('wiki')->section(false)->chars(false);
+```
 
 ### Displaying Content
 
@@ -51,19 +51,4 @@ You might as well set a maximum amout of characters:
 ```php
 // will output the first 100 chars of the 'Mascot' section.
 Wikipedia::load('https://en.wikipedia.org/wiki/PHP', 'Mascot', 100);
-```
-
-When using the field in a `form`, the values are stored in an array with a title of all keys combined, e.g.:
-
-```php
-// in the form config:
-$form->wikipedia('wiki_url', 'wiki_section', 'max_chars');
-
-// retrieve the data
-$wikipedia = $form->wiki_url_wiki_section_max_chars;
-Wikipedia::load(
-    $wikipedia['wiki_url'],
-    $wikipedia['wiki_section'],
-    $wikipedia['max_chars'],
-);
 ```

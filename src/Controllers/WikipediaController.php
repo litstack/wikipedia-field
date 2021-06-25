@@ -61,6 +61,9 @@ class WikipediaController
 
         $text = '';
         foreach ($response['query']['pages'] as $key => $page) {
+            if (! array_key_exists('extract', $page)) {
+                continue;
+            }
             $text .= $page['extract'];
         }
 
@@ -142,7 +145,9 @@ class WikipediaController
 
         $sections = collect((array) json_decode($response->getBody())->parse->sections);
 
-        return $section ? $sections->where('line', $section)->first()->index : 0;
+        $id = $sections->where('line', $section)->first()?->index;
+
+        return $id ?: 0;
     }
 
     /**
