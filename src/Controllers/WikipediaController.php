@@ -4,6 +4,7 @@ namespace Litstack\Wikipedia\Controllers;
 
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Http;
+use InvalidArgumentException;
 use Litstack\Wikipedia\Requests\WikipediaPreviewRequest;
 
 class WikipediaController
@@ -82,17 +83,20 @@ class WikipediaController
     public function getSection(string $api_url, string $page, string $section, ?int $chars = null): string
     {
         $section_id = $this->getSectionId($api_url, $section, $page);
-
+        if (!$section_id) {
+            throw new InvalidArgumentException("The section '$section' was not found.");
+        }
+        
         $response = Http::get($api_url, [
             'action'  => 'parse',
             'format'  => 'json',
             'page'    => $page,
             'section' => $section_id,
         ]);
-
+        
         $html = (array) json_decode($response->getBody())->parse->text;
         $html = $html['*'];
-
+        
         $output = $this->stripContent($html, $section, $chars);
 
         return $output;
@@ -158,11 +162,6 @@ class WikipediaController
      */
     public function stripContent(string $html, ?string $section = null, ?int $chars = null): string
     {
-        // remove everything before h2 if not first section
-        if ($section) {
-            $html = strstr($html, '<h2>');
-        }
-
         // remove everything until first paragraph
         $html = strstr($html, '<p>');
 
@@ -179,7 +178,6 @@ class WikipediaController
             '/<h2.*?\<\/h2>/s',
             '/<sup.*?\<\/sup>/s',
             '/<!--.*?\-->/s',
-
         ];
 
         foreach ($regexpattern as $pattern) {
@@ -187,17 +185,24 @@ class WikipediaController
             $html = preg_replace($pattern, $replacement, $html);
         }
 
-        $text = strip_tags($html);
+        $html = strip_tags($html);
 
+        
         if ($chars) {
             // we don't want new lines in our preview
-            $text_only_spaces = preg_replace('/\s+/', ' ', $text);
-            // truncates the text + 3 to end after ". " iff
-            $text_truncated = mb_substr($text_only_spaces, 0, mb_strpos($text_only_spaces, ' ', $chars + 3));
-            // prevents last word truncation
-            return trim(mb_substr($text_truncated, 0, mb_strrpos($text_truncated, ' ')));
+            $html = preg_replace('/\s+/', ' ', $html);
+            // cut to length with whole words
+            $html = preg_replace('/\s+?(\S+)?$/', '', substr($html, 0, $chars));
+            // right trim commas
+            $html = rtrim($html, ',');
+            // append with ... if ends in sentence
+            if (!str_ends_with($html, '.')) {
+                $html .= ' ...';
+            }
+
+            return $html;
         }
 
-        return $text;
+        return $html;
     }
 }
