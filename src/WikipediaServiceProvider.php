@@ -18,9 +18,6 @@ class WikipediaServiceProvider extends ServiceProvider
      */
     public function register()
     {
-        Form::field('wikipedia', WikipediaField::class);
-        Lit::script(__DIR__.'/../dist/index.js');
-
         $loader = AliasLoader::getInstance();
         $loader->alias('Wikipedia', WikipediaFacade::class);
 
@@ -36,6 +33,9 @@ class WikipediaServiceProvider extends ServiceProvider
      */
     public function boot()
     {
+        Form::field('wikipedia', WikipediaField::class);
+        Lit::script(__DIR__.'/../dist/index.js');
+        
         $this->loadRoutesFrom(__DIR__.'/routes/api.php');
     }
 }
