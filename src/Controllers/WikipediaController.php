@@ -50,7 +50,9 @@ class WikipediaController
      */
     protected function getSummary($api_url, $page, ?int $chars = null): string
     {
-        $response = Http::get($api_url, [
+        $response = Http::withHeaders([
+            'User-Agent' => 'LitstackWikipediaClient/1.0 (https://github.com/litstack/wikipedia-field)',
+        ])->get($api_url, [
             'format'      => 'json',
             'redirects'   => 1,
             'action'      => 'query',
@@ -86,8 +88,10 @@ class WikipediaController
         if (!$section_id) {
             throw new InvalidArgumentException("The section '$section' was not found.");
         }
-        
-        $response = Http::get($api_url, [
+
+        $response = Http::withHeaders([
+            'User-Agent' => 'LitstackWikipediaClient/1.0 (https://github.com/litstack/wikipedia-field)',
+        ])->get($api_url, [
             'action'  => 'parse',
             'format'  => 'json',
             'page'    => $page,
@@ -140,7 +144,9 @@ class WikipediaController
      */
     public function getSectionId(string $api_url, string $section, string $page): int
     {
-        $response = Http::get($api_url, [
+        $response = Http::withHeaders([
+            'User-Agent' => 'LitstackWikipediaClient/1.0 (https://github.com/litstack/wikipedia-field)',
+        ])->get($api_url, [
             'format' => 'json',
             'action' => 'parse',
             'prop'   => 'sections',
