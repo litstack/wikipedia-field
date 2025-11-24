@@ -9,6 +9,8 @@ use Litstack\Wikipedia\Requests\WikipediaPreviewRequest;
 
 class WikipediaController
 {
+    protected string $userAgent = 'LitstackWikipediaClient/1.0 (https://github.com/litstack/wikipedia-field)';
+
     /**
      * Load wikipedia content.
      *
@@ -51,7 +53,7 @@ class WikipediaController
     protected function getSummary($api_url, $page, ?int $chars = null): string
     {
         $response = Http::withHeaders([
-            'User-Agent' => 'LitstackWikipediaClient/1.0 (https://github.com/litstack/wikipedia-field)',
+            'User-Agent' => $this->userAgent,
         ])->get($api_url, [
             'format'      => 'json',
             'redirects'   => 1,
@@ -90,7 +92,7 @@ class WikipediaController
         }
 
         $response = Http::withHeaders([
-            'User-Agent' => 'LitstackWikipediaClient/1.0 (https://github.com/litstack/wikipedia-field)',
+            'User-Agent' => $this->userAgent,
         ])->get($api_url, [
             'action'  => 'parse',
             'format'  => 'json',
@@ -145,7 +147,7 @@ class WikipediaController
     public function getSectionId(string $api_url, string $section, string $page): int
     {
         $response = Http::withHeaders([
-            'User-Agent' => 'LitstackWikipediaClient/1.0 (https://github.com/litstack/wikipedia-field)',
+            'User-Agent' => $this->userAgent,
         ])->get($api_url, [
             'format' => 'json',
             'action' => 'parse',
