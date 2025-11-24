@@ -9,8 +9,12 @@ use Litstack\Wikipedia\Requests\WikipediaPreviewRequest;
 
 class WikipediaController
 {
-    protected string $userAgent = 'LitstackWikipediaClient/1.0 (https://github.com/litstack/wikipedia-field)';
+    protected string $userAgent;
 
+    public function __construct()
+    {
+        $this->userAgent = config('lit.fields.wikipedia.user_agent', 'LitstackWikipediaClient/1.0 (https://github.com/litstack/wikipedia-field)');
+    }
     /**
      * Load wikipedia content.
      *
